@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  cassandra:
+    image: 'bitnami/cassandra:3'
+    ports:
+      - '7000:7000'
+      - '9042:9042'
+    volumes:
+      - 'cassandra_data:/bitnami'
+    environment:
+      - CASSANDRA_SEEDS=cassandra
+      - CASSANDRA_PASSWORD_SEEDER=yes
+      - CASSANDRA_PASSWORD=cassandra
+volumes:
+  cassandra_data:
+    driver: local
+
+# descripe keyspaces;
+# CREATE KEYSPACE oauth WITH REPLICATION = {'class': 'SimpleStrategy', 'replication_factor': 1};
+# USE oauth;
+# describe tables;
+# CREATE TABLE access_tokens( access_token varchar PRIMARY KEY, user_id bigint, client_id bigint, expires bigint);
+# SELECT * FROM access_tokens WHERE access_token='dfdf'; 
+## Always select data only with primary key because otherwise casandra needs to scan all the keyspace for data and performance will be horrible;

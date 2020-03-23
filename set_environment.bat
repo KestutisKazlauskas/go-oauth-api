@@ -1,0 +1,2 @@
+SET cassandra_username=cassandra
+SET cassandra_password=cassandra

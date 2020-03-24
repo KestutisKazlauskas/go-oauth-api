@@ -10,6 +10,7 @@ const (
 	cassandra_password = "cassandra_password"
 )
 
+
 var (
 	cluster *gocql.ClusterConfig
 	username = os.Getenv(cassandra_username)

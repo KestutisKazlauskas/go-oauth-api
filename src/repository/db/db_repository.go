@@ -28,14 +28,8 @@ type dbRepository struct {
 }
 
 func (r *dbRepository) GetById(id string) (*access_token.AccessToken, *errors.RestErr) {
-	session, err := cassandra.GetSession()
-	if err != nil {
-		return nil, errors.NewInternalServerError("Database connections error", err)
-	}
-	defer session.Close()
-
 	accessToken := access_token.AccessToken{}
-	if err = session.Query(QueryGetAccessToken, id).Scan(
+	if err := cassandra.GetSession().Query(QueryGetAccessToken, id).Scan(
 		&accessToken.AccessToken, 
 		&accessToken.UserId, 
 		&accessToken.ClientId, 
@@ -51,13 +45,7 @@ func (r *dbRepository) GetById(id string) (*access_token.AccessToken, *errors.Re
 }
 
 func (r *dbRepository) Create(accessToken access_token.AccessToken) *errors.RestErr {
-	session, err := cassandra.GetSession()
-	if err != nil {
-		return errors.NewInternalServerError("Database connections error", err)
-	}
-	defer session.Close()
-
-	if err = session.Query(
+	if err := cassandra.GetSession().Query(
 		QueryCreateAccessToken,
 		accessToken.AccessToken,
 		accessToken.UserId,
@@ -71,13 +59,7 @@ func (r *dbRepository) Create(accessToken access_token.AccessToken) *errors.Rest
 }
 
 func (r *dbRepository) UpdateExpirationTime(accessToken access_token.AccessToken) *errors.RestErr {
-	session, err := cassandra.GetSession()
-	if err != nil {
-		return errors.NewInternalServerError("Database connections error", err)
-	}
-	defer session.Close()
-
-	if err = session.Query(
+	if err := cassandra.GetSession().Query(
 		QueryUpdateExpirationTime,
 		accessToken.Expires,
 		accessToken.AccessToken,

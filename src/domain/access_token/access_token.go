@@ -1,7 +1,7 @@
 package access_token
 
 import (
-	"github.com/KestutisKazlauskas/go-oauth-api/src/utils/errors"
+	"github.com/KestutisKazlauskas/go-utils/rest_errors"
 	"github.com/KestutisKazlauskas/go-oauth-api/src/utils/crypto_utils"
 	"time"
 	"fmt"
@@ -26,14 +26,14 @@ type AccessTokenRequest struct {
 	ClientSecret string `json:"client_secret"`
 }
 
-func (accessTokenReq *AccessTokenRequest) Validate() *errors.RestErr {
+func (accessTokenReq *AccessTokenRequest) Validate() *rest_errors.RestErr {
 	switch accessTokenReq.AuthType {
 	case authTypePassword:
 		break
 	case authTypeClientCredentials:
-		return errors.NewBadRequestError("AuthType not implemented yet")
+		return rest_errors.NewBadRequestError("AuthType not implemented yet")
 	default:
-		return errors.NewBadRequestError("invalid auth type")
+		return rest_errors.NewBadRequestError("invalid auth type")
 	}
 	return nil 
 }
@@ -46,22 +46,22 @@ type AccessToken struct {
 	Expires int64 `json:"expires"`
 }
 
-func (accessToken *AccessToken) Validate() *errors.RestErr {
+func (accessToken *AccessToken) Validate() *rest_errors.RestErr {
 
 	if accessToken.AccessToken == "" {
-		return errors.NewBadRequestError("invalid access_token")
+		return rest_errors.NewBadRequestError("invalid access_token")
 	}
 
 	if accessToken.UserId <= 0 {
-		return errors.NewBadRequestError("invalid user_id")
+		return rest_errors.NewBadRequestError("invalid user_id")
 	}
 
 	if accessToken.ClientId <= 0 {
-		return errors.NewBadRequestError("invalid client_id")
+		return rest_errors.NewBadRequestError("invalid client_id")
 	}
 
 	if accessToken.Expires <= 0 {
-		return errors.NewBadRequestError("invalid expires")
+		return rest_errors.NewBadRequestError("invalid expires")
 	}
 
 	return nil

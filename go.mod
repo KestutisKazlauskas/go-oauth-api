@@ -3,6 +3,7 @@ module github.com/KestutisKazlauskas/go-oauth-api
 go 1.14
 
 require (
+	github.com/KestutisKazlauskas/go-utils v0.0.0-20200401154552-2ea841f68446
 	github.com/federicoleon/golang-restclient v0.0.0-20191104170228-162ed620df66
 	github.com/gin-gonic/gin v1.6.0
 	github.com/gocql/gocql v0.0.0-20200320183641-769c970a283b

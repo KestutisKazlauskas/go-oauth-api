@@ -1,7 +1,7 @@
 package access_token
 
 import (
-	"github.com/KestutisKazlauskas/go-oauth-api/src/utils/errors"
+	"github.com/KestutisKazlauskas/go-utils/rest_errors"
 	"github.com/KestutisKazlauskas/go-oauth-api/src/repository/rest"
 	"github.com/KestutisKazlauskas/go-oauth-api/src/repository/db"
 	"github.com/KestutisKazlauskas/go-oauth-api/src/domain/access_token"
@@ -9,9 +9,9 @@ import (
 )
 
 type Service interface {
-	GetById(string) (*access_token.AccessToken, *errors.RestErr)
-	Create(access_token.AccessTokenRequest) (*access_token.AccessToken,*errors.RestErr)
-	UpdateExpirationTime(access_token.AccessToken) *errors.RestErr
+	GetById(string) (*access_token.AccessToken, *rest_errors.RestErr)
+	Create(access_token.AccessTokenRequest) (*access_token.AccessToken,*rest_errors.RestErr)
+	UpdateExpirationTime(access_token.AccessToken) *rest_errors.RestErr
 }
 
 type serivce struct {
@@ -26,10 +26,10 @@ func NewService(userRepo rest.UsersRepository, dbRepo db.DbRepository) Service {
 	}
 }
 
-func (s *serivce) GetById(accessTokenId string) (*access_token.AccessToken, *errors.RestErr) {
+func (s *serivce) GetById(accessTokenId string) (*access_token.AccessToken, *rest_errors.RestErr) {
 	accessTokenId = strings.TrimSpace(accessTokenId)
 	if len(accessTokenId) == 0 {
-		return nil, errors.NewBadRequestError("No access_token_id provided.")
+		return nil, rest_errors.NewBadRequestError("No access_token_id provided.")
 	}
 	accessToken, err := s.dbRepo.GetById(accessTokenId)
 
@@ -40,7 +40,7 @@ func (s *serivce) GetById(accessTokenId string) (*access_token.AccessToken, *err
 	return accessToken, nil
 }
 
-func (s *serivce) Create(request access_token.AccessTokenRequest) (*access_token.AccessToken, *errors.RestErr) {
+func (s *serivce) Create(request access_token.AccessTokenRequest) (*access_token.AccessToken, *rest_errors.RestErr) {
 	if err := request.Validate(); err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func (s *serivce) Create(request access_token.AccessTokenRequest) (*access_token
 	return &accessToken, nil
 }
 
-func (s *serivce) UpdateExpirationTime(accessToken access_token.AccessToken) *errors.RestErr {
+func (s *serivce) UpdateExpirationTime(accessToken access_token.AccessToken) *rest_errors.RestErr {
 	if err := accessToken.Validate(); err != nil {
 		return err
 	}

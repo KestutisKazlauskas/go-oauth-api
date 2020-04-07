@@ -10,7 +10,7 @@ import (
 
 const (
 	QueryGetAccessToken = "SELECT access_token, user_id, client_id, expires FROM access_tokens WHERE access_token=?;"
-	QueryCreateAccessToken = "INSERT INTO access_tokens (access_token, client_id, user_id, expires) VALUES (?, ?, ?, ?);"
+	QueryCreateAccessToken = "INSERT INTO access_tokens (access_token, user_id, client_id, expires) VALUES (?, ?, ?, ?);"
 	QueryUpdateExpirationTime = "UPDATE access_tokens SET expires=? WHERE access_token=?";
 )
 
